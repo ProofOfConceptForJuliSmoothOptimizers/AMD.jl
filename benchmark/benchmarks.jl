@@ -1,9 +1,20 @@
+using BenchmarkTools
 using DelimitedFiles, LinearAlgebra, Printf, SparseArrays
 using Pkg.Artifacts
 
 using DataFrames, MatrixMarket
 using Metis, SymRCM, AMD
 using LDLFactorizations, SolverBenchmark
+
+const SUITE = BenchmarkGroup()
+SUITE["no_ordering"] = BenchmarkGroup()
+SUITE["amd"] = BenchmarkGroup()
+SUITE["symamd"] = BenchmarkGroup()
+SUITE["metis"] = BenchmarkGroup()
+SUITE["symrcm"] = BenchmarkGroup()
+SUITE["nnz"] = BenchmarkGroup()
+
+
 
 latex_benchmarks = false
 
@@ -58,6 +69,13 @@ for subdir ∈ subdirs
       push!(ratio_metis, nnz(ldlt_metis) / nnz_A)
       push!(ratio_symrcm, nnz(ldlt_symrcm) / nnz_A)
       push!(ratio_classic, nnz(ldlt_classic) / nnz_A)
+
+      SUITE["no_ordering"] = @benchmarkable ldl(A, collect(1:size(A,1)))
+      SUITE["amd"][$name] =  @benchmarkable ldl(A, amd(A))
+      SUITE["symamd"][$name] = @benchmarkable ldl(A, symamd(A))
+      SUITE["metis"][$name] = @benchmarkable ldl(A, Metis.permutation(A))
+      SUITE["symrcm"][$name] = @benchmarkable ldl(A, symrcm(A))
+      SUITE["nnz"][$name] = @benchmarkable nnz(tril(A))
     end
   end
 end
