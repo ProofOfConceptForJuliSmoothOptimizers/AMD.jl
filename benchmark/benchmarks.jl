@@ -70,12 +70,12 @@ for subdir ∈ subdirs
       push!(ratio_symrcm, nnz(ldlt_symrcm) / nnz_A)
       push!(ratio_classic, nnz(ldlt_classic) / nnz_A)
 
-      SUITE["no_ordering"] = @benchmarkable ldl(A, collect(1:size(A,1)))
-      SUITE["amd"][$name] =  @benchmarkable ldl(A, amd(A))
-      SUITE["symamd"][$name] = @benchmarkable ldl(A, symamd(A))
-      SUITE["metis"][$name] = @benchmarkable ldl(A, Metis.permutation(A))
-      SUITE["symrcm"][$name] = @benchmarkable ldl(A, symrcm(A))
-      SUITE["nnz"][$name] = @benchmarkable nnz(tril(A))
+      SUITE["no_ordering"][name] = @benchmarkable ldl(A, collect(1:size(A,1)))
+      SUITE["amd"][name] =  @benchmarkable ldl(A, amd(A))
+      SUITE["symamd"][name] = @benchmarkable ldl(A, symamd(A))
+      SUITE["metis"][name] = @benchmarkable ldl(A, Metis.permutation(A))
+      SUITE["symrcm"][name] = @benchmarkable ldl(A, symrcm(A))
+      SUITE["nnz"][name] = @benchmarkable nnz(tril(A))
     end
   end
 end
