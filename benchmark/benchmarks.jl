@@ -26,7 +26,7 @@ const sqd_hash = artifact_hash("sqdcollection", artifact_toml)
 const sqd_path = joinpath(artifact_path(sqd_hash), "sqd-collection-0.1")
 
 subdirs = readdir(sqd_path)
-const formulations = ("2x2")#, "3x3")
+const formulations = ["2x2"]#, "3x3"]
 
 names_sqd     = String[]
 ratio_amd     = Float64[]
