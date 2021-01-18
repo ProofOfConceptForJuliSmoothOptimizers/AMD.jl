@@ -49,7 +49,7 @@ pipeline {
 
      causeString: 'Triggered on $comment',
 
-     token: "AMDPOC",
+     token: "AMD",
 
      printContributedVariables: true,
      printPostContent: true,
