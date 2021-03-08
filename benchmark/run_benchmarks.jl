@@ -2,12 +2,10 @@ using Pkg
 bmark_dir = @__DIR__
 println(@__DIR__)
 Pkg.activate(bmark_dir)
-Pkg.resolve()
 Pkg.instantiate()
 repo_name = string(split(ARGS[1], ".")[1])
 bmarkname = lowercase(repo_name)
 using Git
-
 # if we are running these benchmarks from the git repository
 # we want to develop the package instead of using the release
 if isdir(joinpath(bmark_dir, "..", ".git"))
@@ -49,6 +47,10 @@ files_dict = Dict{String, Any}()
 file_num = 1
 for k ∈ keys(judgement_stats)
   global file_num
+  [println("Keys ", i, " :", key) for (i,key) in enumerate(keys(judgement_stats))]
+  println("commit stats: ", keys(commit_stats))
+  println("master stats: ", keys(master_stats))
+  die()
   k_stats = Dict{Symbol,DataFrame}(:commit => commit_stats[k],
                                    :master => master_stats[k])
   save_stats(k_stats, "ldl_$(bmarkname)_vs_master_$(k).jld2", force=true)
